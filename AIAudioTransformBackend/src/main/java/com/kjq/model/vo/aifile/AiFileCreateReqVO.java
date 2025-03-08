@@ -1,17 +1,13 @@
-package com.kjq.model.entity;
+package com.kjq.model.vo.aifile;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.Version;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import java.sql.Blob;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.sql.Blob;
+import java.util.Date;
 
 /**
  * <p>
@@ -24,63 +20,6 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class AiFile implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * ID
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
-
-    /**
-     * 文件名称
-     */
-    private String fileName;
-
-    /**
-     * 文件地址
-     */
-    private String fileUrl;
-
-    /**
-     * 内容
-     */
-    private Blob content;
-
-    /**
-     * 文件类型
-     */
-    private String fileType;
-
-    /**
-     * 创建者
-     */
-    private String creator;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /**
-     * 更新者
-     */
-    private String updater;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    /**
-     * 是否删除，默认为0（未删除）
-     */
-    @TableLogic
-    private Boolean deleted;
-
+public class AiFileCreateReqVO extends AiFileBaseVO {
 
 }

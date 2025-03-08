@@ -3,15 +3,17 @@ package com.kjq.common;
 /**
  * 自定义状态码码
  */
-public enum StatusCode {
+public enum ErrorCode {
 
-    SUCCESS(20000, "请求成功！"),
     PARAMS_ERROR(40000, "请求参数错误！"),
+    PARAMS_INCONSISTENCY(4000_0001, "两次密码不一致！"),
+    USERNAME_OR_PARAMS_ERROR(4000_0002, "用户名或密码错误！"),
+
     NOT_LOGIN_ERROR(40100, "未登录！"),
     NO_AUTH_ERROR(40101, "无权限！"),
     NOT_FOUND_ERROR(40400, "请求数据不存在！"),
     FORBIDDEN_ERROR(40300, "禁止访问！"),
-    SYSTEM_ERROR(50000, "系统内部异常！"),
+    SYSTEM_ERROR(50000, "系统异常！"),
     OPERATION_ERROR(50001, "操作失败！");
 
     /**
@@ -24,7 +26,7 @@ public enum StatusCode {
      */
     private final String message;
 
-    StatusCode(int code, String message) {
+    ErrorCode(int code, String message) {
         this.code = code;
         this.message = message;
     }

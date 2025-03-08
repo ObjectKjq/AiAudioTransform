@@ -3,22 +3,20 @@ package com.kjq.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Arrays;
-
 /**
  * 全局用户类型枚举
  */
 @AllArgsConstructor
 @Getter
-public enum UserTypeEnum {
+public enum IsDisableEnum {
 
-    USER(0, "用户"),
-    ADMIN(1, "管理员");
+    NO(0, "否"),
+    YES(1, "是");
 
     /**
      * 类型
      */
-    private final Integer value;
+    private final Integer status;
     /**
      * 类型名
      */

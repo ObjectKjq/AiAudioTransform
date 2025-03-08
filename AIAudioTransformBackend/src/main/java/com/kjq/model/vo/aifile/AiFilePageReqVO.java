@@ -1,17 +1,14 @@
-package com.kjq.model.entity;
+package com.kjq.model.vo.aifile;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.Version;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import java.sql.Blob;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.*;
+import com.kjq.model.vo.PageParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.sql.Blob;
+import java.util.Date;
 
 /**
  * <p>
@@ -24,15 +21,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class AiFile implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * ID
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+public class AiFilePageReqVO extends PageParam {
 
     /**
      * 文件名称
@@ -47,7 +36,7 @@ public class AiFile implements Serializable {
     /**
      * 内容
      */
-    private Blob content;
+    private byte[] content;
 
     /**
      * 文件类型

@@ -8,33 +8,29 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ai_audio_transform
     username: root
-    password: 123456
+    password: kjq
   # 文件上传
   servlet:
     multipart:
       # 大小限制
-      max-file-size: 10MB
+      max-file-size: 16MB
 # 接口文档配置
 knife4j:
-  basic:
-    enable: true
-    username: root
-    password: 123456
+  # 开启登录访问
+#  basic:
+#    enable: true
+#    username: root
+#    password: 123456
   enable: true
-  openapi:
-    title: "ai音频转化接口文档"
-    version: 1.0
-    group:
-      default:
-        api-rule: package
-        api-rule-resources:
-          - com.kjq.controller
+  setting:
+    language: zh_cn
+
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: false
+    map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
-      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
-      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+      logic-delete-field: deleted # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值
+      logic-not-delete-value: 0 # 逻辑未删除值

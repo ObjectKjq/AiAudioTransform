@@ -47,7 +47,7 @@ public class AiFile implements Serializable {
     /**
      * 内容
      */
-    private Blob content;
+    private byte[] content;
 
     /**
      * 文件类型

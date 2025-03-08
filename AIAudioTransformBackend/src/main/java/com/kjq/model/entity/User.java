@@ -56,7 +56,7 @@ public class User implements Serializable {
     /**
      * 是禁用（0否1是）
      */
-    private String isDisable;
+    private Integer isDisable;
 
     /**
      * 创建者

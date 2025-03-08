@@ -15,6 +15,14 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class UserRegisterReqVO extends UserBaseVO {
+public class UserLoginReqVO {
+    /**
+     * 用户名
+     */
+    private String username;
 
+    /**
+     * 密码
+     */
+    private String password;
 }

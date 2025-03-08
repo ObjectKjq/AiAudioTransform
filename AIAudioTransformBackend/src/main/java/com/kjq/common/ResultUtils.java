@@ -1,10 +1,10 @@
-package com.yupi.springbootinit.common;
+package com.kjq.common;
+
+import com.kjq.exception.ServiceException;
 
 /**
  * 返回工具类
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 public class ResultUtils {
 
@@ -25,28 +25,18 @@ public class ResultUtils {
      * @param errorCode
      * @return
      */
-    public static BaseResponse error(ErrorCode errorCode) {
-        return new BaseResponse<>(errorCode);
+    public static BaseResponse error(int errorCode, String message) {
+        return new BaseResponse<>(errorCode, null, message);
     }
 
     /**
-     * 失败
-     *
-     * @param code
-     * @param message
-     * @return
-     */
-    public static BaseResponse error(int code, String message) {
-        return new BaseResponse(code, null, message);
-    }
-
-    /**
-     * 失败
+     * 抛出异常
      *
      * @param errorCode
      * @return
      */
-    public static BaseResponse error(ErrorCode errorCode, String message) {
-        return new BaseResponse(errorCode.getCode(), null, message);
+    public static ServiceException exception(ErrorCode errorCode) {
+        return new ServiceException(errorCode);
     }
+
 }
