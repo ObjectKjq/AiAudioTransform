@@ -35,7 +35,6 @@ public class AudioController {
     private AudioService audioService;
 
     @PostMapping("/add")
-    @AuthCheck()
     public BaseResponse<Boolean> addAudio(@RequestBody AudioCreateReqVO audioCreateReqVO) {
         Audio audio = new Audio();
         BeanUtils.copyProperties(audioCreateReqVO, audio);
@@ -44,14 +43,12 @@ public class AudioController {
     }
 
     @DeleteMapping("/delete")
-    @AuthCheck()
     public BaseResponse<Boolean> deleteAudio(@RequestParam("id") Integer id) {
         audioService.removeById(id);
         return success(true);
     }
 
     @PutMapping("/update")
-    @AuthCheck()
     public BaseResponse<Boolean> updateAudio(@RequestBody AudioUpdateReqVO audioUpdateReqVO) {
         Audio audio = new Audio();
         BeanUtils.copyProperties(audioUpdateReqVO, audio);
@@ -60,7 +57,6 @@ public class AudioController {
     }
 
     @GetMapping("/get")
-    @AuthCheck()
     public BaseResponse<AudioRespVO> getAudio(@RequestParam("id") Integer id) {
         Audio audio = audioService.getById(id);
         AudioRespVO audioRespVO = new AudioRespVO();
@@ -69,7 +65,6 @@ public class AudioController {
     }
 
     @PostMapping("/page")
-    @AuthCheck()
     public BaseResponse<Page<AudioRespVO>> getPage(@RequestBody AudioPageReqVO audioPageReqVO) {
         // 获取结果
         Integer pageNo = audioPageReqVO.getPageNo();
@@ -91,7 +86,6 @@ public class AudioController {
     }
 
     @GetMapping("/list")
-    @AuthCheck()
     public BaseResponse<List<AudioRespVO>> getList() {
         List<Audio> audios = audioService.getAudios();
         List<AudioRespVO> audioRespVOS = audios.stream()

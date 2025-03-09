@@ -138,8 +138,9 @@ export default defineConfig({
     {
       requestLibPath: "import { request } from '@umijs/max'",
       // 或者使用在线的版本
-      // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
+      // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json",
       schemaPath: join(__dirname, 'oneapi.json'),
+      // projectName: 'ant-design-pro',
       mock: false,
     },
     {
@@ -147,6 +148,12 @@ export default defineConfig({
       schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
       projectName: 'swagger',
     },
+    {
+      requestLibPath: "import { request } from '@umijs/max'",
+      schemaPath: "http://localhost:8080/api/v3/api-docs",
+      projectName: 'backend',
+      mock: false,
+    }
   ],
   mfsu: {
     strategy: 'normal',
