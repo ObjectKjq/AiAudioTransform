@@ -1,57 +1,39 @@
-# Ant Design Pro
+# AIAudioTransformFrontend
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+This template should help get you started developing with Vue 3 in Vite.
 
-## Environment Prepare
+## Recommended IDE Setup
 
-Install `node_modules`:
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-```bash
+## Type Support for `.vue` Imports in TS
+
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vite.dev/config/).
+
+## Project Setup
+
+```sh
 npm install
 ```
 
-or
+### Compile and Hot-Reload for Development
 
-```bash
-yarn
+```sh
+npm run dev
 ```
 
-## Provided Scripts
+### Type-Check, Compile and Minify for Production
 
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
-
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
-
-```bash
-npm start
-```
-
-### Build project
-
-```bash
+```sh
 npm run build
 ```
 
-### Check code style
+### Lint with [ESLint](https://eslint.org/)
 
-```bash
+```sh
 npm run lint
 ```
-
-You can also use script to auto fix some lint error:
-
-```bash
-npm run lint:fix
-```
-
-### Test code
-
-```bash
-npm test
-```
-
-## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
