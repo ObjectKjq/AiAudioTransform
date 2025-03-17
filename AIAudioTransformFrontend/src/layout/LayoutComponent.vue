@@ -4,38 +4,18 @@
       <img class="logo" v-if="!collapsed" src="../assets/Logo-2 (1).png" alt="" />
       <img class="logo" v-else src="../assets/yinpin (1).png" alt="" />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
-        <a-menu-item key="1">
+        <a-menu-item @click="$router.push('/')" key="1">
           <pie-chart-outlined />
-          <span>Option 1</span>
+
+          <span>处理结果</span>
         </a-menu-item>
-        <a-menu-item key="2">
+        <a-menu-item @click="$router.push('/audio')" key="2">
           <desktop-outlined />
-          <span>Option 2</span>
+          <span>我的音频</span>
         </a-menu-item>
-        <a-sub-menu key="sub1">
-          <template #title>
-            <span>
-              <user-outlined />
-              <span>User</span>
-            </span>
-          </template>
-          <a-menu-item key="3">Tom</a-menu-item>
-          <a-menu-item key="4">Bill</a-menu-item>
-          <a-menu-item key="5">Alex</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2">
-          <template #title>
-            <span>
-              <team-outlined />
-              <span>Team</span>
-            </span>
-          </template>
-          <a-menu-item key="6">Team 1</a-menu-item>
-          <a-menu-item key="8">Team 2</a-menu-item>
-        </a-sub-menu>
-        <a-menu-item key="9">
+        <a-menu-item @click="$router.push('/user')" key="3">
           <file-outlined />
-          <span>File</span>
+          <span>用户管理</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -49,12 +29,12 @@
         <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
-        <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>User</a-breadcrumb-item>
-          <a-breadcrumb-item>Bill</a-breadcrumb-item>
+        <a-breadcrumb style="margin: 8px 0">
+          <!-- <a-breadcrumb-item>User</a-breadcrumb-item>
+          <a-breadcrumb-item>Bill</a-breadcrumb-item> -->
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          Bill is a cat.
+          <router-view />
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -67,13 +47,12 @@
 import {
   PieChartOutlined,
   DesktopOutlined,
-  UserOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  TeamOutlined,
   FileOutlined,
 } from '@ant-design/icons-vue'
 import { ref } from 'vue'
+
 const collapsed = ref<boolean>(false)
 const selectedKeys = ref<string[]>(['1'])
 </script>

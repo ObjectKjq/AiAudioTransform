@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "openapi": "npx openapi --input http://localhost:8080/api/v3/api-docs --output ./src/api --client axios",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^4.2.6",
+    "axios": "^1.8.3",
     "pinia": "^3.0.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
@@ -29,6 +31,7 @@
     "eslint-plugin-vue": "~10.0.0",
     "jiti": "^2.4.2",
     "npm-run-all2": "^7.0.2",
+    "openapi-typescript-codegen": "^0.29.0",
     "prettier": "3.5.3",
     "typescript": "~5.8.0",
     "vite": "^6.2.1",

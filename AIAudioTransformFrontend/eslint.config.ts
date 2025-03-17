@@ -12,7 +12,6 @@ export default defineConfigWithVueTs(
     name: 'app/files-to-lint',
     files: ['**/*.{ts,mts,tsx,vue}'],
   },
-
   {
     name: 'app/files-to-ignore',
     ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
@@ -21,4 +20,10 @@ export default defineConfigWithVueTs(
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
   skipFormatting,
+  {
+    // 添加 rules 字段来关闭多单词命名检查
+    rules: {
+      'vue/multi-word-component-names': 'off', // 关闭检查
+    },
+  },
 )

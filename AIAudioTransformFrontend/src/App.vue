@@ -1,9 +1,10 @@
 <template>
-  <layout-component />
+  <!-- <layout-component /> -->
+  <router-view />
 </template>
 
 <script setup lang="ts">
-import LayoutComponent from './layout/LayoutComponent.vue'
+// import LayoutComponent from './layout/LayoutComponent.vue'
 </script>
 
 <style scoped></style>

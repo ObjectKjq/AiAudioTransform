@@ -2,10 +2,12 @@ package com.kjq.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.http.HttpRequest;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kjq.annotation.AuthCheck;
 import com.kjq.common.BaseResponse;
+import com.kjq.constant.CommonConstant;
 import com.kjq.constant.UserConstant;
 import com.kjq.enums.IsDisableEnum;
 import com.kjq.enums.UserRoleEnum;
@@ -18,11 +20,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.kjq.common.ErrorCode.PARAMS_INCONSISTENCY;
-import static com.kjq.common.ErrorCode.USERNAME_OR_PARAMS_ERROR;
+import static com.kjq.common.ErrorCode.*;
 import static com.kjq.common.ResultUtils.exception;
 import static com.kjq.common.ResultUtils.success;
 
@@ -125,6 +127,25 @@ public class UserController {
         BeanUtils.copyProperties(userUpdateReqVO, user);
         userService.updateById(user);
         return success(true);
+    }
+
+    /**
+     * 根据Authorization获取用户
+     *
+     * @return
+     */
+    @GetMapping("/info/get")
+    public BaseResponse<UserRespVO> getUserInfo(HttpServletRequest request) {
+        String token = request.getHeader(CommonConstant.AUTHORIZATION);
+        User user = JWTUtil.verify(token);
+        if (ObjectUtils.isEmpty(user)) {
+            throw exception(TOKEN_ERROR);
+        }
+        Integer id = user.getId();
+        user = userService.getById(id);
+        UserRespVO userRespVO = new UserRespVO();
+        BeanUtils.copyProperties(user, userRespVO);
+        return success(userRespVO);
     }
 
     /**
