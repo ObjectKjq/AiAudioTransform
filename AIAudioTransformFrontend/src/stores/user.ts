@@ -16,6 +16,10 @@ export const userStore = defineStore('user', () => {
     user_info.value = user
   }
 
+  const removeUserInfo = () => {
+    user_info.value = null
+  }
+
   const getUserInfo = () => {
     if (user_info.value != null) {
       return user_info.value
@@ -38,5 +42,5 @@ export const userStore = defineStore('user', () => {
   }
 
   // 返回
-  return { user_info, setUserInfo, getUserInfo }
+  return { user_info, setUserInfo, getUserInfo, removeUserInfo }
 })
