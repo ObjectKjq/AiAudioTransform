@@ -1,20 +1,26 @@
 package com.kjq.controller;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kjq.annotation.AuthCheck;
 import com.kjq.common.BaseResponse;
 import com.kjq.constant.UserConstant;
 import com.kjq.model.entity.AiFile;
-import com.kjq.model.vo.aifile.AiFileCreateReqVO;
-import com.kjq.model.vo.aifile.AiFilePageReqVO;
-import com.kjq.model.vo.aifile.AiFileRespVO;
-import com.kjq.model.vo.aifile.AiFileUpdateReqVO;
+import com.kjq.model.vo.aifile.*;
 import com.kjq.service.AiFileService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,9 +41,46 @@ public class AiFileController {
     @Resource
     private AiFileService aiFileService;
 
+    @PostMapping("/upload")
+    public BaseResponse<String> uploadFile(FileUploadReqVO uploadReqVO) throws Exception {
+        MultipartFile file = uploadReqVO.getFile();
+        String fileType = file.getContentType();
+        byte[] content = IoUtil.readBytes(file.getInputStream());
+        String fileName = UUID.randomUUID() + "." + fileType;
+        // 文件上传
+        AiFile aiFile = AiFile.builder()
+                .fileName(fileName)
+                .fileType(fileType)
+                .content(content)
+                .build();
+        aiFileService.save(aiFile);
+        // 修改返回文件路径
+        Integer id = aiFile.getId();
+        String fileUrl = "/ai-file/" + id + "/download/" + fileName;
+        aiFile.setFileUrl(fileUrl);
+        aiFileService.updateById(aiFile);
+        return success(fileUrl);
+    }
+
+    @GetMapping("/{aiFileId}/download/{fileName}")
+    public void getAiFile(HttpServletResponse response,
+                          @PathVariable("aiFileId") Integer aiFileId,
+                          @PathVariable("fileName") String fileName) {
+        AiFile aiFile = aiFileService.getById(aiFileId);
+        byte[] content = aiFile.getContent();
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            ServletOutputStream out = response.getOutputStream();
+            out.write(content);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @PostMapping("/add")
     public BaseResponse<Boolean> addAiFile(@RequestBody AiFileCreateReqVO aiFileCreateReqVO) {
-        AiFile aiFile = new AiFile();
+        AiFile aiFile = AiFile.builder().build();
         BeanUtils.copyProperties(aiFileCreateReqVO, aiFile);
         aiFileService.save(aiFile);
         return success(true);
@@ -51,7 +94,7 @@ public class AiFileController {
 
     @PutMapping("/update")
     public BaseResponse<Boolean> updateAiFile(@RequestBody AiFileUpdateReqVO aiFileUpdateReqVO) {
-        AiFile aiFile = new AiFile();
+        AiFile aiFile = AiFile.builder().build();
         BeanUtils.copyProperties(aiFileUpdateReqVO, aiFile);
         aiFileService.updateById(aiFile);
         return success(true);

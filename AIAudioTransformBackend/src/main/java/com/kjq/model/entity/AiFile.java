@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.sql.Blob;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -24,6 +26,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@Builder
 public class AiFile implements Serializable {
 
     private static final long serialVersionUID = 1L;
