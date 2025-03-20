@@ -43,8 +43,6 @@ const router = createRouter({
   ],
 })
 
-// 1.1.1 未拿到token，跳转到登录页面
-// 1.1.2 拿到了token，请求用户信息
 
 import { UserControllerService } from '@/api'
 import { message } from 'ant-design-vue'
@@ -54,43 +52,55 @@ import { OpenAPI } from '@/api'
 const whiteList = ['/login', '/register']
 // 前置路由守卫，校验用户登录状态
 router.beforeEach((to, from, next) => {
-  // UserControllerService.getUser({ id: 1 }).then((res) => {
-  //   console.log(res)
-  // })
   // 1. 在pinia中获取用户信息
   const { getUserInfo } = userStore()
   const user = getUserInfo()
   if (user == null) {
-    // 1.1 未拿到用户信息，异步请求用户信息
-    UserControllerService.getUserInfo().then((res) => {
-      if (res.code == 0) {
-        // 1.1.1 拿到了用户信息，继续导航
-        if (whiteList.indexOf(to.path) !== -1) {
-          next(`/`) // 跳转到首页
+    // 1.1 未拿到用户信息，先检测有没有Authorization
+    const Authorization = localStorage.getItem('Authorization')
+    if (Authorization == undefined) {
+      // 1.1.1 未拿到Authorization，跳转到登录页面
+      toLogin(to, next) // 跳转登录
+    } else {
+      // 1.1.2 拿到了Authorization，异步请求用户信息
+      UserControllerService.getUserInfo().then((res) => {
+        if (res.code == 0) {
+          // 1.1.2.1 拿到了用户信息，继续导航
+          toNext(to, next) // 继续导航
         } else {
-          next()
+          // 1.1.2.2 未拿到了用户信息，非法token或者已经过期，跳转到登录页面
+          // 删除非法Authorization
+          localStorage.removeItem('Authorization')
+          OpenAPI.HEADERS = undefined
+          toLogin(to, next) // 跳转登录
         }
-      } else {
-        // 1.1.2 未拿到了用户信息，跳转到登录页面
-        // 删除Authorization
-        localStorage.removeItem('Authorization')
-        OpenAPI.HEADERS = undefined
-        if (whiteList.indexOf(to.path) !== -1) {
-          next()
-        } else {
-          message.error('未登录！！')
-          next(`/login?redirect=${to.path}`)
-        }
-      }
-    })
+      }, (err) => {
+        message.error('服务端异常！！')
+      })
+    }
   } else {
     // 1.2 拿到了用户信息，继续导航
-    if (whiteList.indexOf(to.path) !== -1) {
-      next(`/`) // 跳转到首页
-    } else {
-      next()
-    }
+    toNext(to, next) // 继续导航
   }
 })
+
+// 跳转登录页面
+const toLogin = (to:any, next:any) => {
+  if (whiteList.indexOf(to.path) !== -1) {
+    next()
+  } else {
+    message.error('未登录！！')
+    next(`/login?redirect=${to.path}`)
+  }
+}
+
+// 继续导航
+const toNext = (to:any, next:any) => {
+  if (whiteList.indexOf(to.path) !== -1) {
+    next(`/`) // 跳转到首页
+  } else {
+    next()
+  }
+}
 
 export default router

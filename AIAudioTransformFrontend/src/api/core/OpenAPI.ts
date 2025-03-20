@@ -19,15 +19,6 @@ export type OpenAPIConfig = {
   ENCODE_PATH?: ((path: string) => string) | undefined
 }
 
-// 设置token，放置用户刷新后删除
-const Authorization = localStorage.getItem('Authorization')
-let headers: Record<string, string> = {}
-if (Authorization != undefined) {
-  headers = {
-    Authorization: Authorization,
-  }
-}
-
 export const OpenAPI: OpenAPIConfig = {
   BASE: 'http://localhost:8080/api',
   VERSION: '0',
@@ -36,6 +27,6 @@ export const OpenAPI: OpenAPIConfig = {
   TOKEN: undefined,
   USERNAME: undefined,
   PASSWORD: undefined,
-  HEADERS: headers,
+  HEADERS: undefined,
   ENCODE_PATH: undefined,
 }
