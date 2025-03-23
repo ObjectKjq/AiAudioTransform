@@ -51,7 +51,7 @@ const onFinish = (values: FormState) => {
     password: values.password,
   }
   // 调用UserControllerService的userLogin方法
-  UserControllerService.userLogin({ requestBody }).then((res) => {
+  UserControllerService.userLogin(requestBody).then((res) => {
     const Authorization = res.data
     if (res.code == 0 && Authorization != undefined) {
       localStorage.setItem('Authorization', Authorization)

@@ -1,7 +1,9 @@
 package com.kjq.service;
 
+import com.kjq.model.entity.Audio;
 import com.kjq.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.kjq.model.vo.user.UserRespVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -30,4 +32,13 @@ public interface UserService extends IService<User> {
      * @return
      */
     User getLoginUser(HttpServletRequest request);
+
+    /**
+     * 根据Authorization获取当前登录用户
+     *
+     * @param request
+     * @return
+     */
+    UserRespVO getUserInfo(HttpServletRequest request);
+
 }

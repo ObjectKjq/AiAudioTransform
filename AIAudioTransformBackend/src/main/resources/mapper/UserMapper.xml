@@ -21,5 +21,8 @@
     <sql id="Base_Column_List">
         id, username, password, role, avatar_url, is_disable, creator, create_time, updater, update_time, deleted
     </sql>
+    <select id="selectUserById" resultType="com.kjq.model.entity.User">
+        select * from user where id = #{id} and deleted = 0 and is_disable = 0
+    </select>
 
 </mapper>

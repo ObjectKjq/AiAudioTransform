@@ -5,9 +5,11 @@ import com.kjq.model.vo.PageParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.sql.Blob;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -52,7 +54,7 @@ public class AiFilePageReqVO extends PageParam {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新者
@@ -63,7 +65,7 @@ public class AiFilePageReqVO extends PageParam {
      * 更新时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 是否删除，默认为0（未删除）

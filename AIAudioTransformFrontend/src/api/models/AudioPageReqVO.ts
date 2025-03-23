@@ -11,6 +11,6 @@ export type AudioPageReqVO = {
     songId?: number;
     voiceId?: number;
     userId?: number;
-    remark?: string;
+    createTime?: Array<string>;
 };
 

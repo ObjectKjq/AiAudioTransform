@@ -1,8 +1,8 @@
-package com.kjq.model.vo.user;
+package com.kjq.model.vo.audio;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 用户表
+ * 音频表
  * </p>
  *
  * @author kongdefang
@@ -22,7 +22,8 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class UserRespVO extends UserBaseVO {
+public class MyAudioRespVO extends AudioBaseVO {
+
     /**
      * ID
      */
@@ -33,4 +34,15 @@ public class UserRespVO extends UserBaseVO {
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
+
+    /**
+     * 歌曲名称
+     */
+    private String songName;
+
+    /**
+     * 人声名称
+     */
+    private String voiceName;
+
 }

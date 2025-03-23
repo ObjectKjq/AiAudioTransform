@@ -17,14 +17,13 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class UserControllerService {
     /**
+     * @param requestBody
      * @returns BaseResponseBoolean OK
      * @throws ApiError
      */
-    public static updateUser({
-        requestBody,
-    }: {
+    public static updateUser(
         requestBody: UserUpdateReqVO,
-    }): CancelablePromise<BaseResponseBoolean> {
+    ): CancelablePromise<BaseResponseBoolean> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/user/update',
@@ -33,14 +32,13 @@ export class UserControllerService {
         });
     }
     /**
+     * @param requestBody
      * @returns BaseResponseString OK
      * @throws ApiError
      */
-    public static userRegister({
-        requestBody,
-    }: {
+    public static userRegister(
         requestBody: UserRegisterReqVO,
-    }): CancelablePromise<BaseResponseString> {
+    ): CancelablePromise<BaseResponseString> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/user/register',
@@ -49,14 +47,13 @@ export class UserControllerService {
         });
     }
     /**
+     * @param requestBody
      * @returns BaseResponsePageUserRespVO OK
      * @throws ApiError
      */
-    public static getPage({
-        requestBody,
-    }: {
+    public static getPage(
         requestBody: UserPageReqVO,
-    }): CancelablePromise<BaseResponsePageUserRespVO> {
+    ): CancelablePromise<BaseResponsePageUserRespVO> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/user/page',
@@ -65,14 +62,13 @@ export class UserControllerService {
         });
     }
     /**
+     * @param requestBody
      * @returns BaseResponseString OK
      * @throws ApiError
      */
-    public static userLogin({
-        requestBody,
-    }: {
+    public static userLogin(
         requestBody: UserLoginReqVO,
-    }): CancelablePromise<BaseResponseString> {
+    ): CancelablePromise<BaseResponseString> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/user/login',
@@ -81,14 +77,13 @@ export class UserControllerService {
         });
     }
     /**
+     * @param requestBody
      * @returns BaseResponseBoolean OK
      * @throws ApiError
      */
-    public static addUser({
-        requestBody,
-    }: {
+    public static addUser(
         requestBody: UserCreateReqVO,
-    }): CancelablePromise<BaseResponseBoolean> {
+    ): CancelablePromise<BaseResponseBoolean> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/user/add',
@@ -117,14 +112,13 @@ export class UserControllerService {
         });
     }
     /**
+     * @param id
      * @returns BaseResponseUserRespVO OK
      * @throws ApiError
      */
-    public static getUser({
-        id,
-    }: {
+    public static getUser(
         id: number,
-    }): CancelablePromise<BaseResponseUserRespVO> {
+    ): CancelablePromise<BaseResponseUserRespVO> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/user/get',
@@ -134,14 +128,13 @@ export class UserControllerService {
         });
     }
     /**
+     * @param id
      * @returns BaseResponseBoolean OK
      * @throws ApiError
      */
-    public static deleteUser({
-        id,
-    }: {
+    public static deleteUser(
         id: number,
-    }): CancelablePromise<BaseResponseBoolean> {
+    ): CancelablePromise<BaseResponseBoolean> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/user/delete',

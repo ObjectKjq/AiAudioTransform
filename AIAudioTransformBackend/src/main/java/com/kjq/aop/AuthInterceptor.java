@@ -2,8 +2,7 @@ package com.kjq.aop;
 
 import cn.hutool.core.util.ObjUtil;
 import com.kjq.annotation.AuthCheck;
-import com.kjq.common.ErrorCode;
-import com.kjq.enums.UserRoleEnum;
+import com.kjq.model.enums.UserRoleEnum;
 import com.kjq.model.entity.User;
 import com.kjq.service.UserService;
 import org.apache.commons.lang3.StringUtils;

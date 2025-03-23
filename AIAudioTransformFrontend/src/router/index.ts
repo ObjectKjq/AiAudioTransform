@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,7 +43,6 @@ const router = createRouter({
   ],
 })
 
-
 import { UserControllerService } from '@/api'
 import { message } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
@@ -63,20 +62,23 @@ router.beforeEach((to, from, next) => {
       toLogin(to, next) // 跳转登录
     } else {
       // 1.1.2 拿到了Authorization，异步请求用户信息
-      UserControllerService.getUserInfo().then((res) => {
-        if (res.code == 0) {
-          // 1.1.2.1 拿到了用户信息，继续导航
-          toNext(to, next) // 继续导航
-        } else {
-          // 1.1.2.2 未拿到了用户信息，非法token或者已经过期，跳转到登录页面
-          // 删除非法Authorization
-          localStorage.removeItem('Authorization')
-          OpenAPI.HEADERS = undefined
-          toLogin(to, next) // 跳转登录
-        }
-      }, (err) => {
-        message.error('服务端异常！！')
-      })
+      UserControllerService.getUserInfo().then(
+        (res) => {
+          if (res.code == 0) {
+            // 1.1.2.1 拿到了用户信息，继续导航
+            toNext(to, next) // 继续导航
+          } else {
+            // 1.1.2.2 未拿到了用户信息，非法token或者已经过期，跳转到登录页面
+            // 删除非法Authorization
+            localStorage.removeItem('Authorization')
+            OpenAPI.HEADERS = undefined
+            toLogin(to, next) // 跳转登录
+          }
+        },
+        (err) => {
+          message.error(err.message)
+        },
+      )
     }
   } else {
     // 1.2 拿到了用户信息，继续导航
@@ -85,7 +87,7 @@ router.beforeEach((to, from, next) => {
 })
 
 // 跳转登录页面
-const toLogin = (to:any, next:any) => {
+const toLogin = (to: RouteLocationNormalized, next: NavigationGuardNext) => {
   if (whiteList.indexOf(to.path) !== -1) {
     next()
   } else {
@@ -95,7 +97,7 @@ const toLogin = (to:any, next:any) => {
 }
 
 // 继续导航
-const toNext = (to:any, next:any) => {
+const toNext = (to: RouteLocationNormalized, next: NavigationGuardNext) => {
   if (whiteList.indexOf(to.path) !== -1) {
     next(`/`) // 跳转到首页
   } else {

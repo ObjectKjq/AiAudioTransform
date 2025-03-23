@@ -9,19 +9,20 @@ import type { BaseResponseAiFileRespVO } from '../models/BaseResponseAiFileRespV
 import type { BaseResponseBoolean } from '../models/BaseResponseBoolean';
 import type { BaseResponseListAiFileRespVO } from '../models/BaseResponseListAiFileRespVO';
 import type { BaseResponsePageAiFileRespVO } from '../models/BaseResponsePageAiFileRespVO';
+import type { BaseResponseString } from '../models/BaseResponseString';
+import type { FileUploadReqVO } from '../models/FileUploadReqVO';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class AiFileControllerService {
     /**
+     * @param requestBody
      * @returns BaseResponseBoolean OK
      * @throws ApiError
      */
-    public static updateAiFile({
-        requestBody,
-    }: {
+    public static updateAiFile(
         requestBody: AiFileUpdateReqVO,
-    }): CancelablePromise<BaseResponseBoolean> {
+    ): CancelablePromise<BaseResponseBoolean> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/ai-file/update',
@@ -30,14 +31,29 @@ export class AiFileControllerService {
         });
     }
     /**
+     * @param uploadReqVo
+     * @returns BaseResponseString OK
+     * @throws ApiError
+     */
+    public static uploadFile(
+        uploadReqVo: FileUploadReqVO,
+    ): CancelablePromise<BaseResponseString> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/ai-file/upload',
+            query: {
+                'uploadReqVO': uploadReqVo,
+            },
+        });
+    }
+    /**
+     * @param requestBody
      * @returns BaseResponsePageAiFileRespVO OK
      * @throws ApiError
      */
-    public static getPage2({
-        requestBody,
-    }: {
+    public static getPage2(
         requestBody: AiFilePageReqVO,
-    }): CancelablePromise<BaseResponsePageAiFileRespVO> {
+    ): CancelablePromise<BaseResponsePageAiFileRespVO> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/ai-file/page',
@@ -46,19 +62,37 @@ export class AiFileControllerService {
         });
     }
     /**
+     * @param requestBody
      * @returns BaseResponseBoolean OK
      * @throws ApiError
      */
-    public static addAiFile({
-        requestBody,
-    }: {
+    public static addAiFile(
         requestBody: AiFileCreateReqVO,
-    }): CancelablePromise<BaseResponseBoolean> {
+    ): CancelablePromise<BaseResponseBoolean> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/ai-file/add',
             body: requestBody,
             mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param aiFileId
+     * @param fileName
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static getAiFile(
+        aiFileId: number,
+        fileName: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/ai-file/{aiFileId}/download/{fileName}',
+            path: {
+                'aiFileId': aiFileId,
+                'fileName': fileName,
+            },
         });
     }
     /**
@@ -72,14 +106,13 @@ export class AiFileControllerService {
         });
     }
     /**
+     * @param id
      * @returns BaseResponseAiFileRespVO OK
      * @throws ApiError
      */
-    public static getAiFile({
-        id,
-    }: {
+    public static getAiFile1(
         id: number,
-    }): CancelablePromise<BaseResponseAiFileRespVO> {
+    ): CancelablePromise<BaseResponseAiFileRespVO> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/ai-file/get',
@@ -89,14 +122,13 @@ export class AiFileControllerService {
         });
     }
     /**
+     * @param id
      * @returns BaseResponseBoolean OK
      * @throws ApiError
      */
-    public static deleteAiFile({
-        id,
-    }: {
+    public static deleteAiFile(
         id: number,
-    }): CancelablePromise<BaseResponseBoolean> {
+    ): CancelablePromise<BaseResponseBoolean> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/ai-file/delete',

@@ -21,6 +21,9 @@ spring:
     multipart:
       # 大小限制
       max-file-size: 16MB
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: Asia/Shanghai
 # 接口文档配置
 knife4j:
   # 开启登录访问

@@ -23,12 +23,16 @@ export type { BaseResponseListAudioRespVO } from './models/BaseResponseListAudio
 export type { BaseResponseListUserRespVO } from './models/BaseResponseListUserRespVO';
 export type { BaseResponsePageAiFileRespVO } from './models/BaseResponsePageAiFileRespVO';
 export type { BaseResponsePageAudioRespVO } from './models/BaseResponsePageAudioRespVO';
+export type { BaseResponsePageMyAudioRespVO } from './models/BaseResponsePageMyAudioRespVO';
 export type { BaseResponsePageUserRespVO } from './models/BaseResponsePageUserRespVO';
 export type { BaseResponseString } from './models/BaseResponseString';
 export type { BaseResponseUserRespVO } from './models/BaseResponseUserRespVO';
+export type { FileUploadReqVO } from './models/FileUploadReqVO';
+export type { MyAudioRespVO } from './models/MyAudioRespVO';
 export type { OrderItem } from './models/OrderItem';
 export type { PageAiFileRespVO } from './models/PageAiFileRespVO';
 export type { PageAudioRespVO } from './models/PageAudioRespVO';
+export type { PageMyAudioRespVO } from './models/PageMyAudioRespVO';
 export type { PageUserRespVO } from './models/PageUserRespVO';
 export type { UserCreateReqVO } from './models/UserCreateReqVO';
 export type { UserLoginReqVO } from './models/UserLoginReqVO';

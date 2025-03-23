@@ -4,10 +4,10 @@
 /* eslint-disable */
 export type UserRespVO = {
     username?: string;
-    password?: string;
     role?: number;
     avatarUrl?: string;
     isDisable?: number;
     id?: number;
+    createTime?: string;
 };
 

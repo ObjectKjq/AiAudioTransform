@@ -4,7 +4,6 @@
 /* eslint-disable */
 export type UserUpdateReqVO = {
     username?: string;
-    password?: string;
     role?: number;
     avatarUrl?: string;
     isDisable?: number;

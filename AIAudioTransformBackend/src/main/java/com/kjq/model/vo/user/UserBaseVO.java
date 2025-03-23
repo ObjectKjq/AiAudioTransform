@@ -27,11 +27,6 @@ public class UserBaseVO {
     private String username;
 
     /**
-     * 密码
-     */
-    private String password;
-
-    /**
      * 角色（0用户1管理员）
      */
     private Integer role;

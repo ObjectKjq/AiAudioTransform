@@ -5,8 +5,10 @@ import com.kjq.model.vo.PageParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -52,10 +54,8 @@ public class AudioPageReqVO extends PageParam {
      */
     private Integer userId;
 
-    /**
-     * 备注
-     */
-    private String remark;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime[] createTime;
 
 
 }

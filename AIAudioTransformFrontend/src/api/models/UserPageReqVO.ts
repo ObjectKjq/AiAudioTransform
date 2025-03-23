@@ -8,7 +8,6 @@ export type UserPageReqVO = {
     username?: string;
     role?: number;
     isDisable?: number;
-    createTime?: string;
-    updateTime?: string;
+    createTime?: Array<string>;
 };
 

@@ -1,14 +1,14 @@
-package com.kjq.enums;
+package com.kjq.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 全局用户类型枚举
+ * 是否删除
  */
 @AllArgsConstructor
 @Getter
-public enum IsDisableEnum {
+public enum DeletedEnum {
 
     NO(0, "否"),
     YES(1, "是");

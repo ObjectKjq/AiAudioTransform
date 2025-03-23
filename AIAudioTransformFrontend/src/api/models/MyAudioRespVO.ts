@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AudioRespVO = {
+export type MyAudioRespVO = {
     audioName?: string;
     audioUrl?: string;
     type?: number;
@@ -12,5 +12,7 @@ export type AudioRespVO = {
     remark?: string;
     id?: number;
     createTime?: string;
+    songName?: string;
+    voiceName?: string;
 };
 

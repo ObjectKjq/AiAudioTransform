@@ -1,13 +1,9 @@
-package com.kjq.enums;
+package com.kjq.model.enums;
 
 import com.kjq.constant.UserConstant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 全局用户类型枚举

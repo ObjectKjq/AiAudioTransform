@@ -2,15 +2,15 @@ package com.kjq.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import cn.hutool.http.HttpRequest;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kjq.annotation.AuthCheck;
 import com.kjq.common.BaseResponse;
 import com.kjq.constant.CommonConstant;
 import com.kjq.constant.UserConstant;
-import com.kjq.enums.IsDisableEnum;
-import com.kjq.enums.UserRoleEnum;
+import com.kjq.model.enums.DeletedEnum;
+import com.kjq.model.enums.IsDisableEnum;
+import com.kjq.model.enums.UserRoleEnum;
 import com.kjq.model.entity.User;
 import com.kjq.model.vo.user.*;
 import com.kjq.service.UserService;
@@ -136,16 +136,8 @@ public class UserController {
      */
     @GetMapping("/info/get")
     public BaseResponse<UserRespVO> getUserInfo(HttpServletRequest request) {
-        String token = request.getHeader(CommonConstant.AUTHORIZATION);
-        User user = JWTUtil.verify(token);
-        if (ObjectUtils.isEmpty(user)) {
-            throw exception(TOKEN_ERROR);
-        }
-        Integer id = user.getId();
-        user = userService.getById(id);
-        UserRespVO userRespVO = new UserRespVO();
-        BeanUtils.copyProperties(user, userRespVO);
-        return success(userRespVO);
+        // 获取用户信息
+        return success(userService.getUserInfo(request));
     }
 
     /**
@@ -177,6 +169,21 @@ public class UserController {
         Integer pageSize = userPageReqVO.getPageSize();
         Page<User> page = new Page<>(pageNo, pageSize);
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getDeleted, DeletedEnum.NO.getStatus());
+        // 拼接查询条件
+        if (StrUtil.isNotBlank(userPageReqVO.getUsername())) {
+            wrapper.like(User::getUsername, userPageReqVO.getUsername());
+        }
+        if (ObjectUtils.isNotEmpty(userPageReqVO.getRole())) {
+            wrapper.eq(User::getRole, userPageReqVO.getRole());
+        }
+        if (ObjectUtils.isNotEmpty(userPageReqVO.getIsDisable())) {
+            wrapper.eq(User::getIsDisable, userPageReqVO.getIsDisable());
+        }
+        if (ObjectUtils.isNotEmpty(userPageReqVO.getCreateTime())) {
+            wrapper.between(User::getCreateTime, userPageReqVO.getCreateTime()[0], userPageReqVO.getCreateTime()[1]);
+        }
+        wrapper.orderByDesc(User::getId);
         Page<User> userPage = userService.page(page, wrapper);
         // 生成返回值
         List<User> users = userPage.getRecords();

@@ -6,14 +6,20 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kjq.constant.CommonConstant;
 import com.kjq.model.entity.User;
 import com.kjq.mapper.UserMapper;
+import com.kjq.model.vo.user.UserRespVO;
 import com.kjq.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kjq.utils.JWTUtil;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import static com.kjq.common.ErrorCode.TOKEN_ERROR;
+import static com.kjq.common.ResultUtils.exception;
 
 /**
  * <p>
@@ -42,5 +48,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             user = JWTUtil.verify(token);
         }
         return user;
+    }
+
+    @Override
+    public UserRespVO getUserInfo(HttpServletRequest request) {
+        String token = request.getHeader(CommonConstant.AUTHORIZATION);
+        User user = JWTUtil.verify(token);
+        if (ObjectUtils.isEmpty(user)) {
+            throw exception(TOKEN_ERROR);
+        }
+        Integer id = user.getId();
+        user = userMapper.selectUserById(id);
+        UserRespVO userRespVO = new UserRespVO();
+        BeanUtils.copyProperties(user, userRespVO);
+        return userRespVO;
     }
 }
