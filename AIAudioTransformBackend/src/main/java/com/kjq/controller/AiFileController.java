@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kjq.common.BaseResponse;
 import com.kjq.model.entity.AiFile;
 import com.kjq.model.vo.aifile.*;
+import com.kjq.model.vo.user.UserRespVO;
 import com.kjq.service.AiFileService;
+import com.kjq.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,18 +41,32 @@ public class AiFileController {
 
     @Resource
     private AiFileService aiFileService;
+    @Resource
+    private UserService userService;
 
     @PostMapping("/upload")
-    public BaseResponse<String> uploadFile(FileUploadReqVO uploadReqVO) throws Exception {
+    public BaseResponse<String> uploadFile(FileUploadReqVO uploadReqVO, HttpServletRequest request) throws Exception {
+        UserRespVO userInfo = userService.getUserInfo(request);
         MultipartFile file = uploadReqVO.getFile();
         String fileType = file.getContentType();
         byte[] content = IoUtil.readBytes(file.getInputStream());
-        String fileName = UUID.randomUUID() + "." + fileType;
+
+        // 提取后缀名
+        String name = file.getOriginalFilename();
+        String type = "";
+        if (name != null && name.contains(".")) {
+            type = name.substring(name.lastIndexOf(".") + 1);
+        }
+        String fileName = UUID.randomUUID() + "." + type;
         // 文件上传
         AiFile aiFile = AiFile.builder()
                 .fileName(fileName)
                 .fileType(fileType)
                 .content(content)
+                .creator(userInfo.getId().toString())
+                // .createTime(LocalDateTime.now())
+                .updater(userInfo.getId().toString())
+                // .updateTime(LocalDateTime.now())
                 .build();
         aiFileService.save(aiFile);
         // 修改返回文件路径

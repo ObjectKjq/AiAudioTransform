@@ -24,6 +24,48 @@
       <!-- 重置按钮 -->
       <a-button @click="handleReset">重置</a-button>
     </div>
+
+    <!-- 分割线 -->
+    <a-divider />
+
+    <!-- 新增按钮 -->
+    <div class="add-button-container">
+      <a-button type="primary" @click="handleAdd">新增</a-button>
+    </div>
+
+    <a-modal v-model:open="open" :title="formTitle" @ok="handleOk">
+      <a-form :model="audioBaseVO" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-form-item label="音频名称">
+          <a-input v-model:value="audioBaseVO.audioName" />
+        </a-form-item>
+        <a-form-item label="上传音频">
+          <a-upload
+            v-model:file-list="fileList"
+            name="file"
+            :action="uploadUrl"
+            :headers="headers"
+            :before-upload="beforeUpload"
+            @change="handleChange"
+            :multiple="false"
+          >
+            <a-button>
+              <upload-outlined></upload-outlined>
+              上传文件
+            </a-button>
+          </a-upload>
+        </a-form-item>
+        <a-form-item label="类型">
+          <a-radio-group v-model:value="audioBaseVO.type">
+            <a-radio :value="0">声音</a-radio>
+            <a-radio :value="1">音乐</a-radio>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="备注">
+          <a-textarea v-model:value="audioBaseVO.remark" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
+
     <a-table
       :columns="columns"
       :data-source="data"
@@ -32,12 +74,12 @@
       align="center"
       @change="handleTableChange"
     >
-      <template #bodyCell="{ column }">
+      <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
           <span>
-            <a>编辑</a>
+            <a @click="handleEdit(record.id)">编辑</a>
             <a-divider type="vertical" />
-            <a>删除</a>
+            <a @click="handleDelete(record.id)">删除</a>
           </span>
         </template>
       </template>
@@ -48,10 +90,11 @@
 <script setup lang="ts">
 import { AudioControllerService } from '@/api'
 import type { AudioPageReqVO, AudioRespVO } from '@/api'
-import { computed, onMounted } from 'vue'
-import { message } from 'ant-design-vue'
+import { computed, createVNode, onMounted } from 'vue'
+import { message, Modal, type UploadChangeParam, type UploadFile } from 'ant-design-vue'
 import { ref } from 'vue'
 import dayjs from 'dayjs'
+import { ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons-vue'
 
 const columns = [
   {
@@ -191,6 +234,137 @@ const handleSearch = () => {
 onMounted(() => {
   getReqData()
 })
+
+import { OpenAPI } from '@/api'
+const audioBaseVO = ref<AudioRespVO>({
+  audioName: undefined,
+  audioUrl: undefined,
+  type: undefined,
+  remark: undefined,
+})
+const uploadUrl = OpenAPI.BASE + '/ai-file/upload'
+const headers = OpenAPI.HEADERS
+const fileList = ref<Array<UploadFile>>([])
+const beforeUpload = (file: File) => {
+  fileList.value = []
+  // 如果已经有文件，阻止上传
+  // if (fileList.value.length >= 1) {
+  //   message.warning('只能上传一个文件！')
+  //   return false
+  // }
+  // 文件类型和大小校验
+  // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  // if (!isJpgOrPng) {
+  //   message.error('只能上传 JPG/PNG 文件!');
+  //   return false;
+  // }
+  const isLt2M = file.size / 1024 / 1024 <= 16
+  if (!isLt2M) {
+    message.error('文件大小不能超过 16MB!')
+    return false
+  }
+
+  return true
+}
+
+// 处理上传状态变化
+const handleChange = (info: UploadChangeParam) => {
+  // 更新文件列表
+  fileList.value = info.fileList
+
+  if (info.file.status === 'done' && info.file.response.code === 0) {
+    audioBaseVO.value.audioUrl = info.file.response.data
+    message.success(`${info.file.name} 文件上传成功`)
+  } else if (info.file.status === 'error') {
+    message.error(`${info.file.name} 文件上传失败`)
+  }
+}
+
+const formTitle = ref<string>('新增')
+// 新增
+const labelCol = { style: { width: '100px' } }
+const wrapperCol = { span: 17 }
+const open = ref(false)
+const handleOk = () => {
+  // 提交后端
+  if (formTitle.value == '新增') {
+    AudioControllerService.addAudio(audioBaseVO.value).then((res) => {
+      if (res.code == 0) {
+        message.success('新增成功')
+        open.value = false
+        getReqData()
+      } else {
+        open.value = false
+        message.error(res.code)
+      }
+    })
+  } else {
+    AudioControllerService.updateAudio(audioBaseVO.value).then((res) => {
+      if (res.code == 0) {
+        message.success('编辑成功')
+        open.value = false
+        getReqData()
+      } else {
+        open.value = false
+        message.error(res.code)
+      }
+    })
+  }
+}
+// 获取用户信息
+const getAudioInfo = (id: number) => {
+  AudioControllerService.getAudio(id).then((res) => {
+    if (res.code == 0 && res.data != null) {
+      audioBaseVO.value = res.data
+    } else {
+      message.error(res.code)
+    }
+  })
+}
+const handleAdd = () => {
+  formTitle.value = '新增'
+  open.value = true
+  audioBaseVO.value = {}
+  fileList.value = []
+}
+// 编辑
+const handleEdit = (id: number) => {
+  formTitle.value = '编辑'
+  open.value = true
+  getAudioInfo(id)
+  audioBaseVO.value = {}
+  fileList.value = []
+}
+// 删除
+const handleDelete = (id: number) => {
+  Modal.confirm({
+    title: '您确定要删除这个条记录吗?',
+    icon: createVNode(ExclamationCircleOutlined),
+    // content: 'Some descriptions',
+    okText: '是',
+    okType: 'danger',
+    cancelText: '否',
+    onOk() {
+      AudioControllerService.deleteAudio(id).then(
+        (res) => {
+          if (res.code == 0) {
+            message.success('删除成功')
+            getReqData()
+          } else {
+            message.error(res.message)
+          }
+        },
+        (err) => {
+          message.error(err.message)
+        },
+      )
+      console.log('OK')
+    },
+    onCancel() {
+      console.log('Cancel')
+    },
+  })
+}
 </script>
 
 <style scoped>
@@ -201,9 +375,12 @@ onMounted(() => {
   gap: 10px; /* 设置组件之间的间距 */
   margin-bottom: 16px;
 }
-
 /* 搜索组件 */
 .search-item {
   margin-bottom: 10px; /* 确保换行时下方有 10px 的间隔 */
+}
+/* 新增按钮容器 */
+.add-button-container {
+  margin-bottom: 16px;
 }
 </style>

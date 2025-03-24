@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +42,17 @@ public class AudioController {
     private UserService userService;
 
     @PostMapping("/add")
-    public BaseResponse<Boolean> addAudio(@RequestBody AudioCreateReqVO audioCreateReqVO) {
+    public BaseResponse<Boolean> addAudio(@RequestBody AudioCreateReqVO audioCreateReqVO, HttpServletRequest request) {
+        // 获取用户信息
+        UserRespVO userInfo = userService.getUserInfo(request);
+
         Audio audio = new Audio();
         BeanUtils.copyProperties(audioCreateReqVO, audio);
+        audio.setCreator(userInfo.getId().toString());
+        // audio.setCreateTime(LocalDateTime.now());
+        audio.setUpdater(userInfo.getId().toString());
+        // audio.setUpdateTime(LocalDateTime.now());
+        audio.setUserId(userInfo.getId());
         audioService.save(audio);
         return success(true);
     }
@@ -55,9 +64,14 @@ public class AudioController {
     }
 
     @PutMapping("/update")
-    public BaseResponse<Boolean> updateAudio(@RequestBody AudioUpdateReqVO audioUpdateReqVO) {
+    public BaseResponse<Boolean> updateAudio(@RequestBody AudioUpdateReqVO audioUpdateReqVO, HttpServletRequest request) {
+        // 获取用户信息
+        UserRespVO userInfo = userService.getUserInfo(request);
+
         Audio audio = new Audio();
         BeanUtils.copyProperties(audioUpdateReqVO, audio);
+        audio.setUpdater(userInfo.getId().toString());
+        // audio.setUpdateTime(LocalDateTime.now());
         audioService.updateById(audio);
         return success(true);
     }

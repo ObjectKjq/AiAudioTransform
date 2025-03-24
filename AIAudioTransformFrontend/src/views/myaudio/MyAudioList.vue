@@ -25,6 +25,7 @@
       <!-- 重置按钮 -->
       <a-button @click="handleReset">重置</a-button>
     </div>
+
     <a-table
       :columns="columns"
       :data-source="data"
@@ -36,11 +37,9 @@
       <template #bodyCell="{ column }">
         <template v-if="column.key === 'action'">
           <span>
-            <a>下载</a>
+            <a @click="handleDownload">下载</a>
             <a-divider type="vertical" />
-            <a>播放</a>
-            <a-divider type="vertical" />
-            <a>删除</a>
+            <a @click="handleDelete">删除</a>
           </span>
         </template>
       </template>
@@ -218,6 +217,11 @@ onMounted(() => {
   getSongList()
   getVoiceList()
 })
+
+// 下载
+const handleDownload = () => {}
+// 删除
+const handleDelete = () => {}
 </script>
 
 <style scoped>
@@ -228,9 +232,12 @@ onMounted(() => {
   gap: 10px; /* 设置组件之间的间距 */
   margin-bottom: 16px;
 }
-
 /* 搜索组件 */
 .search-item {
   margin-bottom: 10px; /* 确保换行时下方有 10px 的间隔 */
+}
+/* 新增按钮容器 */
+.add-button-container {
+  margin-bottom: 16px;
 }
 </style>
