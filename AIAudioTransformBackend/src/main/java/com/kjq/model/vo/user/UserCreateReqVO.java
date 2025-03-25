@@ -1,12 +1,8 @@
 package com.kjq.model.vo.user;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -20,5 +16,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class UserCreateReqVO extends UserBaseVO {
-
+    /**
+     * 密码
+     */
+    private String password;
 }

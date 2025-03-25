@@ -34,12 +34,17 @@
       align="center"
       @change="handleTableChange"
     >
-      <template #bodyCell="{ column }">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'audioUrl'">
+          <audio controls>
+            <source :src="urlApi + record.audioUrl" type="audio/mpeg" />
+          </audio>
+        </template>
         <template v-if="column.key === 'action'">
           <span>
-            <a @click="handleDownload">下载</a>
+            <a :href="urlApi + record.audioUrl">下载</a>
             <a-divider type="vertical" />
-            <a @click="handleDelete">删除</a>
+            <a @click="handleDelete(record.id)">删除</a>
           </span>
         </template>
       </template>
@@ -50,10 +55,14 @@
 <script setup lang="ts">
 import { AudioControllerService } from '@/api'
 import type { AudioPageReqVO, AudioRespVO } from '@/api'
-import { computed, onMounted } from 'vue'
-import { message } from 'ant-design-vue'
+import { computed, createVNode, onMounted } from 'vue'
+import { message, Modal } from 'ant-design-vue'
 import { ref } from 'vue'
 import dayjs from 'dayjs'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+
+import { OpenAPI } from '@/api'
+const urlApi = OpenAPI.BASE
 
 const data = ref<Array<AudioRespVO>>([])
 const loading = ref(true)
@@ -218,10 +227,36 @@ onMounted(() => {
   getVoiceList()
 })
 
-// 下载
-const handleDownload = () => {}
 // 删除
-const handleDelete = () => {}
+const handleDelete = (id: number) => {
+  Modal.confirm({
+    title: '您确定要删除这个条记录吗?',
+    icon: createVNode(ExclamationCircleOutlined),
+    // content: 'Some descriptions',
+    okText: '是',
+    okType: 'danger',
+    cancelText: '否',
+    onOk() {
+      AudioControllerService.deleteAudio(id).then(
+        (res) => {
+          if (res.code == 0) {
+            message.success('删除成功')
+            getReqData()
+          } else {
+            message.error(res.message)
+          }
+        },
+        (err) => {
+          message.error(err.message)
+        },
+      )
+      console.log('OK')
+    },
+    onCancel() {
+      console.log('Cancel')
+    },
+  })
+}
 </script>
 
 <style scoped>
@@ -239,5 +274,24 @@ const handleDelete = () => {}
 /* 新增按钮容器 */
 .add-button-container {
   margin-bottom: 16px;
+}
+audio {
+  width: 300px;
+  height: 50px;
+  border-radius: 20px;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  background-color: #fff;
+  /* border: 1px solid #ddd; */
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-mute-button {
+  background-color: #007bff;
+  border-radius: 50%;
 }
 </style>

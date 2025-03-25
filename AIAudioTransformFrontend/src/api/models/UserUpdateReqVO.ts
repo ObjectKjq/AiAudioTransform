@@ -8,5 +8,6 @@ export type UserUpdateReqVO = {
     avatarUrl?: string;
     isDisable?: number;
     id?: number;
+    password?: string;
 };
 

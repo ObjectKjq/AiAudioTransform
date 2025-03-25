@@ -31,7 +31,9 @@
             @click.prevent
             shape="square"
             size="large"
-            :src="user_info?.avatar_url ? user_info?.avatar_url : '/src/assets/icon-test.png'"
+            :src="
+              user_info?.avatar_url ? urlApi + user_info?.avatar_url : '/src/assets/icon-test.png'
+            "
             style="margin-left: auto; margin-right: 16px"
           />
           <template #overlay>
@@ -77,6 +79,8 @@ const router = useRouter()
 // 获取路由地址
 const route = router.currentRoute.value
 const selectedKeys = ref<string[]>([route.path])
+
+const urlApi = OpenAPI.BASE
 
 // 退出登录
 

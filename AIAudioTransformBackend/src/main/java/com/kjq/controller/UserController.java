@@ -94,9 +94,13 @@ public class UserController {
      */
     @PostMapping("/add")
     @AuthCheck(UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> addUser(@RequestBody UserCreateReqVO userCreateReqVO) {
+    public BaseResponse<Boolean> addUser(@RequestBody UserCreateReqVO userCreateReqVO, HttpServletRequest request) {
+        UserRespVO userInfo = userService.getUserInfo(request);
         User user = new User();
         BeanUtils.copyProperties(userCreateReqVO, user);
+        user.setPassword(DigestUtil.md5Hex(user.getPassword()));
+        user.setCreator(userInfo.getId().toString());
+        user.setUpdater(userInfo.getId().toString());
         userService.save(user);
         return success(true);
     }
@@ -122,9 +126,12 @@ public class UserController {
      */
     @PutMapping("/update")
     @AuthCheck(UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateReqVO userUpdateReqVO) {
+    public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateReqVO userUpdateReqVO, HttpServletRequest request) {
+        UserRespVO userInfo = userService.getUserInfo(request);
         User user = new User();
         BeanUtils.copyProperties(userUpdateReqVO, user);
+        user.setPassword(DigestUtil.md5Hex(user.getPassword()));
+        user.setUpdater(userInfo.getId().toString());
         userService.updateById(user);
         return success(true);
     }

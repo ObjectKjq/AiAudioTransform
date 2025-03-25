@@ -7,5 +7,6 @@ export type UserCreateReqVO = {
     role?: number;
     avatarUrl?: string;
     isDisable?: number;
+    password?: string;
 };
 
