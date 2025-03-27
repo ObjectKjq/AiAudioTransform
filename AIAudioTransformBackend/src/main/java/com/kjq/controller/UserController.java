@@ -95,7 +95,7 @@ public class UserController {
     @PostMapping("/add")
     @AuthCheck(UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> addUser(@RequestBody UserCreateReqVO userCreateReqVO, HttpServletRequest request) {
-        
+
         UserRespVO userInfo = userService.getUserInfo(request);
         User user = new User();
         BeanUtils.copyProperties(userCreateReqVO, user);
